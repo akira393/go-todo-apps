@@ -7,29 +7,31 @@ import (
 	"udemy.com/golang-webgosql/utils"
 )
 
-type ConfigList struct{
-	Port string
+type ConfigList struct {
+	Port      string
 	SQLDriver string
-	DbName string
-	LogFile string
+	DbName    string
+	LogFile   string
+	Static    string
 }
 
 var Config ConfigList
 
-func init(){
+func init() {
 	LoadConfig()
 	utils.LoggingSettings(Config.LogFile)
 }
 
-func LoadConfig(){
-	cfg,err:=ini.Load("config.ini")
-	if err!=nil{
+func LoadConfig() {
+	cfg, err := ini.Load("config.ini")
+	if err != nil {
 		log.Fatalln(err)
 	}
-	Config=ConfigList{
-		Port:cfg.Section("web").Key("port").MustString("8080"),
+	Config = ConfigList{
+		Port:      cfg.Section("web").Key("port").MustString("8080"),
 		SQLDriver: cfg.Section("db").Key("driver").String(),
-		DbName: cfg.Section("db").Key("name").String(),
-		LogFile: cfg.Section("web").Key("logfile").String(),
+		DbName:    cfg.Section("db").Key("name").String(),
+		LogFile:   cfg.Section("web").Key("logfile").String(),
+		Static:    cfg.Section("web").Key("static").String(),
 	}
 }
